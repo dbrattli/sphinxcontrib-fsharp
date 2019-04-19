@@ -9,7 +9,7 @@ import setuptools
 version = "0.3.0"
 
 setuptools.setup(
-    name="sphinx-fsharp",
+    name="sphinxcontrib-fsharp",
     version=version,
     description="Sphinx extension to document F# libraries",
     long_description=open("README.rst").read(),
