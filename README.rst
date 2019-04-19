@@ -17,9 +17,9 @@ Questions? Remarks? Bugs? Want to contribute? `Open an issue
 Status
 ======
 
-sphinxcontrib-fsharp is still highly experimental.
-Interfaces may be changed unannounced.
-We welcome all feedback from our daring early users.
+sphinxcontrib-fsharp is a fork of spinxcontrib-ocaml and still highly
+experimental. Interfaces may be changed unannounced. We welcome all
+contributions so please feel free to submit PRs.
 
 Quick start
 ===========
