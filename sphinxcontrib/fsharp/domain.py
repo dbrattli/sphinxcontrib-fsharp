@@ -39,7 +39,7 @@ class Directive(docutils.parsers.rst.Directive):
     doc_field_types = []
 
     def current_module_prefix(self):
-        return self.env.domaindata[OCamlDomain.name]["module_stack"][-1]
+        return self.env.domaindata[FSharpDomain.name]["module_stack"][-1]
 
     def get_index_entry(self):
         container_name = self.current_module_prefix()[:-1]
@@ -59,12 +59,12 @@ class Directive(docutils.parsers.rst.Directive):
 
         contents_node = desc_content()
         if self.contents_separator is not None:
-            self.env.domaindata[OCamlDomain.name]["module_stack"].append(
+            self.env.domaindata[FSharpDomain.name]["module_stack"].append(
                 self.current_module_prefix() + self.arguments[0] + self.contents_separator
             )
         self.state.nested_parse(self.content, self.content_offset, contents_node)
         if self.contents_separator is not None:
-            self.env.domaindata[OCamlDomain.name]["module_stack"].pop()
+            self.env.domaindata[FSharpDomain.name]["module_stack"].pop()
         # @todo Maybe labels and constructors should be directives instead of docfields?
         sphinx.util.docfields.DocFieldTransformer(self).transform_all(contents_node)
 
@@ -87,7 +87,7 @@ class Directive(docutils.parsers.rst.Directive):
             if "noindex" not in self.options:
                 index_entry = self.get_index_entry()
                 if index_entry is not None:
-                    self.env.domaindata[OCamlDomain.name][self.role][ident.split()[-1]] = self.env.docname
+                    self.env.domaindata[FSharpDomain.name][self.role][ident.split()[-1]] = self.env.docname
                     index_node["entries"].append(("single", index_entry, ident, "", None))
 
         return [index_node, main_node]
@@ -98,24 +98,18 @@ class Container(Directive):
         functor_parameters = desc_content()
         contents = desc_content()
         for node in contents_node.children:
-            if node.get("objtype") == FunctorParameter.object_type:
-                functor_parameters += node
-            else:
-                contents += node
+            contents += node
 
-        yield desc_signature(*self.make_signature_nodes(functor_parameters))
-        if functor_parameters.children:
-            yield functor_parameters
-            yield desc_signature(desc_annotation("-> sig"))
+        yield desc_signature(*self.make_signature_nodes())
         yield contents
         footer = self.get_footer()
         if footer is not None:
             yield desc_signature(desc_annotation(footer))
 
-    def make_signature_nodes(self, functor_parameters):
+    def make_signature_nodes(self):
         yield desc_annotation(self.get_header_prefix())
         yield desc_name(self.arguments[0])
-        yield desc_annotation(self.get_header_suffix(functor_parameters))
+        yield desc_annotation(self.get_header_suffix())
 
 
 class Module(Container):
@@ -133,15 +127,15 @@ class Module(Container):
     def get_id(self):
         return "mod {}{}".format(self.current_module_prefix(), self.arguments[0])
 
-    def make_signature_nodes(self, functor_parameters):
+    def make_signature_nodes(self):
         yield desc_annotation(self.get_header_prefix())
         yield desc_name(self.arguments[0])
-        yield desc_annotation(self.get_header_suffix(functor_parameters))
+        yield desc_annotation(self.get_header_suffix())
 
     def get_header_prefix(self):
         return "module "
 
-    def get_header_suffix(self, functor_parameters):
+    def get_header_suffix(self):
         alias_of = self.options.get("alias_of")
         if alias_of is None:
             contents_from = self.options.get("contents_from")
@@ -149,18 +143,12 @@ class Module(Container):
                 contents_from = ""
             else:
                 contents_from = "{} = ".format(contents_from)
-            if functor_parameters.children:
-                return " : {}functor".format(contents_from, functor_parameters)
-            else:
-                return " : {}sig".format(contents_from)
+            return " : {}sig1".format(contents_from)
         else:
             return " = {}".format(alias_of)
 
     def get_footer(self):
-        if self.options.get("alias_of") is None:
-            return "end"
-        else:
-            return None
+        return None
 
 
 class ModuleType(Container):
@@ -180,37 +168,17 @@ class ModuleType(Container):
     def get_header_prefix(self):
         return "module type "
 
-    def get_header_suffix(self, functor_parameters):
+    def get_header_suffix(self):
         contents_from = self.options.get("contents_from")
         if contents_from is None:
             contents_from = ""
         else:
             contents_from = "{} = ".format(contents_from)
-        if functor_parameters.children:
-            return " = {}functor".format(contents_from, functor_parameters)
-        else:
-            return " = {}sig".format(contents_from)
+
+        return " = {}sig2".format(contents_from)
 
     def get_footer(self):
         return "end"
-
-
-class FunctorParameter(Module):
-    option_spec = {
-        "contents_from": docutils.parsers.rst.directives.unchanged,
-    }
-
-    object_type = "functor_parameter"
-    contents_separator = "$"
-
-    def get_id(self):
-        return None
-
-    def get_header_prefix(self):
-        return "("
-
-    def get_footer(self):
-        return "end)"
 
 
 class Include(Directive):
@@ -242,17 +210,17 @@ class Include(Directive):
 
         contents_from = self.options.get("contents_from")
         if contents_from is None:
-            yield desc_annotation("sig")
+            yield desc_annotation("sig3")
         else:
             yield desc_name(contents_from)
-            yield desc_annotation(" = sig")
+            yield desc_annotation(" = sig4")
 
 
 class Atom(Directive):
     contents_separator = None
 
     def handle_signature(self, sig, signode):
-        self.__full_name = self.env.domaindata[OCamlDomain.name]["module_stack"][-1] + sig
+        self.__full_name = self.env.domaindata[FSharpDomain.name]["module_stack"][-1] + sig
         self.add_signature(sig, signode)
         return "{} {}".format(self.object_type, self.__full_name)
 
@@ -359,16 +327,15 @@ class XRefRole(sphinx.roles.XRefRole):
         return (title, target)
 
 
-class OCamlDomain(sphinx.domains.Domain):
-    name = "ocaml"
-    label = "OCaml"
+class FSharpDomain(sphinx.domains.Domain):
+    name = "fsharp"
+    label = "F#"
     object_types = {
         Module.object_type: sphinx.domains.ObjType(Module.object_type, Module.role),
         ModuleType.object_type: sphinx.domains.ObjType(ModuleType.object_type, ModuleType.role),
         Value.object_type: sphinx.domains.ObjType(Value.object_type, Value.role),
         Type.object_type: sphinx.domains.ObjType(Type.object_type, Type.role),
         Exception.object_type: sphinx.domains.ObjType(Exception.object_type, Exception.role),
-        # @todo Add an object type for functor parameters
     }
     directives = {
         Module.object_type: Module,
@@ -378,12 +345,10 @@ class OCamlDomain(sphinx.domains.Domain):
         Exception.object_type: Exception,
 
         Include.object_type: Include,
-        FunctorParameter.object_type: FunctorParameter,
     }
     roles = {
         Module.role: XRefRole(),
         ModuleType.role: XRefRole(),
-        # @todo Add a role for functor parameters
         Value.role: XRefRole(),
         Type.role: XRefRole(),
         Exception.role: XRefRole(),
@@ -397,14 +362,13 @@ class OCamlDomain(sphinx.domains.Domain):
         Exception.role: {},
     }
     # @todo Add indexes for:
-    # - modules (maybe specific indexes for structures and functors?)
-    # - module types (maybe for signatures and functors?)
+    # - modules (maybe specific indexes for structures?)
+    # - module types (maybe for signatures?)
     # - values
     # - types
     # - exceptions
     # - constructors
     # - labels
-    # - functor parameters
 
     def resolve_xref(self, env, fromdocname, builder, role, target, node, child):
         data = self.data[role]
@@ -420,7 +384,7 @@ class OCamlDomain(sphinx.domains.Domain):
                 todocname = None
                 if matches:
                     logger.error("multiple matches for target '%s'" %
-                                 target, subtype='ocaml')
+                                 target, subtype='fsharp')
         else:
             todocname = data.get(target)
         if todocname:

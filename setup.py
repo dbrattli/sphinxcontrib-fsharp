@@ -9,13 +9,13 @@ import setuptools
 version = "0.3.0"
 
 setuptools.setup(
-    name="sphinxcontrib-ocaml",
+    name="sphinx-fsharp",
     version=version,
-    description="Sphinx extension to document OCaml libraries",
+    description="Sphinx extension to document F# libraries",
     long_description=open("README.rst").read(),
-    author="Vincent Jacques",
-    author_email="vincent@vincent-jacques.net",
-    url="http://jacquev6.github.io/sphinxcontrib-ocaml/",
+    author="Dag Brattli",
+    author_email="dag@brattli.net",
+    url="http://github.com/dbrattli/sphinx-fsharp",
     packages=setuptools.find_packages(),
     namespace_packages=["sphinxcontrib"],
     license="MIT",
@@ -26,7 +26,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: OCaml",
+        "Programming Language :: F#",
         "Topic :: Documentation",
         "Topic :: Documentation :: Sphinx",
     ],

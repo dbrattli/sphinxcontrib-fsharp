@@ -34,8 +34,7 @@ Quick start
 
 Install both packages::
 
-    $ pip3 install sphinxcontrib-ocaml
-    $ opam install sphinxcontrib-ocaml
+    $ pip3 install sphinxcontrib-fsharp
 
 Enable and configure the Sphinx extension in your ``conf.py`` file::
 

@@ -3,9 +3,9 @@
 # Copyright 2017 Vincent Jacques <vincent@vincent-jacques.net>
 
 """
-A `Sphinx <http://www.sphinx-doc.org>`_ extension providing an `OCaml`
+A `Sphinx <http://www.sphinx-doc.org>`_ extension providing an `F#`
 `domain <http://www.sphinx-doc.org/en/stable/domains.html>`_
-and `autodocumenters <>`_ for `OCaml` elements.
+and `autodocumenters <>`_ for `F#` elements.
 """
 
 from . import domain
@@ -16,7 +16,7 @@ from . import autodocumenters
 
 
 def setup(app):
-    app.add_domain(domain.OCamlDomain)
+    app.add_domain(domain.FSharpDomain)
     app.add_autodocumenter(autodocumenters.ModuleDocumenter)
     app.add_config_value("ocaml_autodoc_executable", "sphinxcontrib-ocaml-autodoc", "env")
     app.add_config_value("ocaml_source_directories", None, "env")
