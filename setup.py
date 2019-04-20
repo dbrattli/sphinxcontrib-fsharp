@@ -6,7 +6,7 @@
 import setuptools
 
 
-version = "0.3.0"
+version = "0.3.1"
 
 setuptools.setup(
     name="sphinxcontrib-fsharp",
@@ -15,7 +15,7 @@ setuptools.setup(
     long_description=open("README.rst").read(),
     author="Dag Brattli",
     author_email="dag@brattli.net",
-    url="http://github.com/dbrattli/sphinx-fsharp",
+    url="http://github.com/dbrattli/sphinxcontrib-fsharp",
     packages=setuptools.find_packages(),
     namespace_packages=["sphinxcontrib"],
     license="MIT",
