@@ -143,7 +143,7 @@ class Module(Container):
                 contents_from = ""
             else:
                 contents_from = "{} = ".format(contents_from)
-            return " : {}sig1".format(contents_from)
+            return " : {}".format(contents_from)
         else:
             return " = {}".format(alias_of)
 
@@ -175,10 +175,10 @@ class ModuleType(Container):
         else:
             contents_from = "{} = ".format(contents_from)
 
-        return " = {}sig2".format(contents_from)
+        return " = {}".format(contents_from)
 
     def get_footer(self):
-        return "end"
+        return None
 
 
 class Include(Directive):
@@ -203,17 +203,14 @@ class Include(Directive):
     def make_nodes(self, contents_node):
         yield desc_signature(*self.make_signature_nodes())
         yield contents_node
-        yield desc_signature(desc_annotation("end"))
 
     def make_signature_nodes(self):
         yield desc_annotation("include ")
 
         contents_from = self.options.get("contents_from")
-        if contents_from is None:
-            yield desc_annotation("sig3")
-        else:
+        if contents_from is not None:
             yield desc_name(contents_from)
-            yield desc_annotation(" = sig4")
+            yield desc_annotation(" = ")
 
 
 class Atom(Directive):
