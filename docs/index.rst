@@ -1,6 +1,6 @@
-===================
-sphinxcontrib-ocaml
-===================
+====================
+sphinxcontrib-fsharp
+====================
 
 .. include:: ../README.rst
 
@@ -10,7 +10,7 @@ Contents
 .. toctree::
 
     user_guide
-    reference
+    sphinx_domain
 
 Indexes and tables
 ==================

@@ -1,21 +1,23 @@
 ===================
-OCaml Sphinx domain
+F# Sphinx domain
 ===================
 
-.. default-domain:: ocaml
+.. default-domain:: fsharp
 
 .. highlight:: rst
 
-Remember that these directives and roles are in a Sphinx `domain <http://www.sphinx-doc.org/en/stable/domains.html>`_,
-so you can either prefix them with ``ocaml:`` or set the default domain to ``"ocaml"``, either with the ``default-domain`` directive::
+Remember that these directives and roles are in a Sphinx `domain
+<http://www.sphinx-doc.org/en/stable/domains.html>`_, so you can either
+prefix them with ``fsharp:`` or set the default domain to ``"fsharp"``,
+either with the ``default-domain`` directive::
 
-    .. default-domain:: ocaml
+    .. default-domain:: fsharp
 
 or in the ``conf.py`` file:
 
 .. code-block:: python
 
-    primary_domain = "ocaml"
+    primary_domain = "fsharp"
 
 Examples below assume the default domain is set.
 
@@ -302,94 +304,6 @@ Modules and module types
 
     Refer to module types using the :rst:role:`modtyp` role.
 
-Functors
---------
-
-.. rst:directive:: .. functor_parameter:: Name
-
-    Document a functor parameter::
-
-        .. module:: Functor
-
-            .. functor_parameter:: Parameter
-
-                .. val:: n
-                    :type: int
-
-            .. val:: m
-                :type: int
-
-    ..
-
-        .. module:: Functor
-            :noindex:
-
-            .. functor_parameter:: Parameter
-
-                .. val:: n
-                    :noindex:
-                    :type: int
-
-            .. val:: m
-                :noindex:
-                :type: int
-
-    ::
-
-        .. module_type:: FunctorType
-
-            .. functor_parameter:: Parameter
-
-                .. val:: n
-                    :type: int
-
-            .. val:: m
-                :type: int
-
-    ..
-
-        .. module_type:: FunctorType
-            :noindex:
-
-            .. functor_parameter:: Parameter
-
-                .. val:: n
-                    :noindex:
-                    :type: int
-
-            .. val:: m
-                :noindex:
-                :type: int
-
-    The ``:contents_from:`` option is also applicable to functor parameters::
-
-        .. module:: Functor2
-
-            .. functor_parameter:: Parameter
-                :contents_from: SomeModuleType
-
-                .. val:: n
-                    :type: int
-
-            .. val:: m
-                :type: int
-
-    ..
-
-        .. module:: Functor2
-            :noindex:
-
-            .. functor_parameter:: Parameter
-                :contents_from: SomeModuleType
-
-                .. val:: n
-                    :noindex:
-                    :type: int
-
-            .. val:: m
-                :noindex:
-                :type: int
-
 Roles
 =====
 
@@ -431,7 +345,7 @@ You can avoid creating entries by using their ``:noindex:`` option. (That's what
             .. val:: v1
 
         .. val:: v2
-        
+
         .. type:: t2
 
         .. exception:: E2

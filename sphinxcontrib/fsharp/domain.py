@@ -1,5 +1,7 @@
 # coding: utf8
 
+# TODO: align with https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference
+
 # Copyright 2017 Vincent Jacques <vincent@vincent-jacques.net>
 
 import itertools
@@ -154,7 +156,6 @@ class Module(Container):
 class ModuleType(Container):
     option_spec = {
         "noindex": docutils.parsers.rst.directives.flag,
-
         "contents_from": docutils.parsers.rst.directives.unchanged,
     }
 
